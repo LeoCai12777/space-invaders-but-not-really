@@ -1,4 +1,4 @@
-public class Dialogue // frame for dialogue, alternatively, we could have a box pop up instead
+public class Dialogue // pop up text box, contains options; kinda like the problem set menus
 {
     private String dialoguePartner;
 
