@@ -1,21 +1,14 @@
-public class Dialogue // frame for dialogue, alternatively, we could have a box pop up instead
+public class Dialogue // pop up text box, offers options like Jay's problem set menus
 {
     private String dialoguePartner;
 
     public Dialogue()
     {
-        // 
+
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
     public int sampleMethod(int y)
     {
-        // put your code here
-        return x + y;
+
     }
 }
