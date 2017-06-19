@@ -13,12 +13,13 @@ public class Ship implements Commons, KeyListener
     private int lives, xPos, yPos, width;
     private Bullet bullet;
     private final String playerImg = "src/images/player.png";
+    private ImageIcon im;
 
     public Ship (int l, int x, int y) {
         lives = l;
         xPos = x;
         yPos = y;
-        ImageIcon im = new ImageIcon (playerImg);
+        im = new ImageIcon (playerImg);
         width = im.getImage().getWidth(null);
     }
 
