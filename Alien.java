@@ -33,7 +33,6 @@ public class Alien {
     
     public void shoot() {
         bullet = new Bullet (xPos, yPos, false);
-        bullet.shoot();
     }
 }
 
