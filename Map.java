@@ -17,16 +17,7 @@ class Map implements Commons
                 map [row] [col] = null; // blank space
     }
 
-    public Map (int alienR, int alienC) {
-        this();
-        for (int a = 0; a < alienR; a++) {
-            for (int b = 0; b < alienC; b++) {
-                map [a*(ALIEN_HEIGHT+5)+30][b*(ALIEN_WIDTH+5)+30] = new Alien (a*(ALIEN_HEIGHT+5)+30, b*(ALIEN_WIDTH+5)+30);
-            }
-        }
-        //moveAliens( 500);
-    }
-
+ 
     public void print (Graphics g)  // displays the map on the screen
     {
         for (int row = 0 ; row < map.length; row++)// number of rows
@@ -52,27 +43,27 @@ class Map implements Commons
         }
     }
 
-    public void moveAliens (int time) {
-        Timer timer = new Timer ();
-        timer.schedule(new Task(), 0, time);
-    }
-    class Task extends TimerTask {
-        public void run () {
-            for (int row = 0 ; row < map.length; row++) {// number of rows 
-                for (int col = 0 ; col < map[0].length; col++) {// length of first row
-                    if (map[row][col] instanceof Alien){
-                        if (col + ALIEN_WIDTH + 5 > MAP_WIDTH) {
-                            ((Alien) map[row][col]).move(0,35);
-                            map[row+35][col] = map[row][col];
-                            map[row][col] = null;
-                        }
-                        else {
-                            ((Alien)map[row][col]).move(35,0);
-                            map[row+35][col] = map[row][col];
-                            map[row][col] = null;
-                        }
-                    }
-                }
+//     public void moveAliens (int time) {
+//         Timer timer = new Timer ();
+//         timer.schedule(new Task(), 0, time);
+//     }
+//     class Task extends TimerTask {
+//         public void run () {
+//             for (int row = 0 ; row < map.length; row++) {// number of rows 
+//                 for (int col = 0 ; col < map[0].length; col++) {// length of first row
+//                     if (map[row][col] instanceof Alien){
+//                         if (col + ALIEN_WIDTH + 5 > MAP_WIDTH) {
+//                             ((Alien) map[row][col]).move(0,35);
+//                             map[row+35][col] = map[row][col];
+//                             map[row][col] = null;
+//                         }
+//                         else {
+//                             ((Alien)map[row][col]).move(35,0);
+//                             map[row+35][col] = map[row][col];
+//                             map[row][col] = null;
+//                         }
+//                     }
+//                 }
             }
         }
     }
