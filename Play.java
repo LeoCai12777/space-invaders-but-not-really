@@ -34,6 +34,23 @@ public class Play extends JFrame
         setSize (900, 600);
         setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo (null);           // Center window.
+        
+        //create Armada
+        Armada fleet = new Armada(15,15)
+        
+//         public void shoot () {
+//         timer = new Timer ();
+//         timer.schedule(new ShootTask(),0, 30);
+//         }
+//         class ShootTask extends TimerTask {
+//             public void run () {
+//                 if (ship)
+//                     yPos += 1;
+//                 else
+//                     yPos -= 1;
+//             }
+//         }
+        
     }
 
   
