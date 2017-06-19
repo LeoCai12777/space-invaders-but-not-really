@@ -10,6 +10,7 @@ import java.awt.event.*;  // Needed for ActionListener
 
 public class Alien {
     private int xPos, yPos; //top left
+    private HitBox box;
     private Bullet bullet;
     private boolean dead = false;
     private final String alienImg = "src/images/alien.png";
@@ -17,6 +18,7 @@ public class Alien {
     public Alien (int x, int y) {
         xPos = x;
         yPos = y;
+        box = new HitBox(x,y);
         ImageIcon im = new ImageIcon(alienImg);
     }
 
