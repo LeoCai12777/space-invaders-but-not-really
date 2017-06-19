@@ -2,40 +2,39 @@ public class Armada
 {
     private Alien[][] fleet; //alien fleet
 
-    public Armada(int level)
+    public Armada(int xPos, int yPos)
     {
         if(level == 1)
         {
             fleet = new Alien[level][5];
-            int y = 0,x;
+            int y = yPos, x;
             for(Alien[] row: fleet)
             {
-                x = 0;
+                x = xPos;
                 for(Alien ship: row)
                 {
-                    ship = new Alien();//use x counter and y counter to produce position
-                    // health and bullets can scale with level
-                    x++;
+                    ship = new Alien(x,y);
+                    x+=45;
                 }
-                y++;
+                y+=45;
             }
         }
-        else if(level == 2)
-        {
-            //same as above, increase difficulty through health and number of ships
-        }
-        else if(level == 3)
-        {
-        }
-        else if(level == 4)
-        {
-        }
-        else if(level == 5)
-        {
-        }
+//         else if(level == 2)
+//         {
+//             //same as above, increase difficulty through health and number of ships
+//         }
+//         else if(level == 3)
+//         {
+//         }
+//         else if(level == 4)
+//         {
+//         }
+//         else if(level == 5)
+//         {
+//         }
     }
     
-    public void move () //timer can be in main, timer should become faster as more units are destroyed
+    public void move () //timer can be in main, timer could become faster as more units are destroyed
                         //repaint after moving
     {
         if () // armada is at edge of screen
