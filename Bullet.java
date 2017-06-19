@@ -3,7 +3,7 @@ import java.util.*;
 public class Bullet {
     public int xPos, yPos, vy;
     private Timer timer;
-    private boolean ship = false, hit;
+    private boolean ship = false;
     public Bullet (int x, int y, boolean s) {
         xPos = x;
         yPos = y;
@@ -12,7 +12,8 @@ public class Bullet {
             vy = -15; // if player, bullet moves up
     }
 
-    public void checkHit (HitBox box) {
-        
+    public boolean checkHitAlien (HitBox box) {
+        if(box.hit(xPos, yPos))
+            return true;
     }
 }
