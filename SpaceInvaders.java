@@ -200,5 +200,5 @@ class Map
 }
 
 //first make stationary aliens
-//timer for bullets
+//timer for bulletsbegbe
 //when aliens and bullets coordiantes intersect, explode
