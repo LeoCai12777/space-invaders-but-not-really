@@ -1,6 +1,7 @@
 public class Armada
 {
     private Alien[][] fleet; //alien fleet
+    private int direction = 1;
 
     public Armada(int xPos, int yPos)
     {
@@ -37,15 +38,16 @@ public class Armada
     public void move () //timer can be in main, timer could become faster as more units are destroyed
                         //repaint after moving
     {
-        if () // armada is at edge of screen
+        if (fleet[fleet.length][fleet[0].length].x()==900||fleet[fleet.length][fleet[0].length].x()==0) // armada is at edge of screen
         {
             for(Alien[] row: fleet)
             {
                 for(Alien ship: row)
                 {
-                    ship.move(5,0);
+                    ship.move(0,5);
                 }
             }
+            direction *= -1;
         }
         else
         {
@@ -53,7 +55,7 @@ public class Armada
             {
                 for(Alien ship: row)
                 {
-                    ship.move(0,5);
+                    ship.move(5*direction,0);
                 }
             }
         }
