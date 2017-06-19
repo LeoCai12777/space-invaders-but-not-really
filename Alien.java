@@ -35,5 +35,13 @@ public class Alien {
     public void shoot() {
         bullet = new Bullet (xPos, yPos, false);
     }
+    
+    public int x() {
+        return xPos;
+    }
+    
+    public int y() {
+        return yPos;
+    }  
 }
 
