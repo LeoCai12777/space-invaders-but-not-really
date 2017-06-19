@@ -11,7 +11,7 @@ import java.awt.event.*;  // Needed for ActionListener
 public class Alien {
     private int xPos, yPos; //top left
     private HitBox box;
-    private Bullet bullet;
+    private Bullet bullet; //meep
     private boolean dead = false;
     private final String alienImg = "src/images/alien.png";
 
