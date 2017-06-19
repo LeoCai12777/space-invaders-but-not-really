@@ -14,6 +14,7 @@ public class Ship implements Commons, KeyListener
     private Bullet bullet;
     private final String playerImg = "src/images/player.png";
     private ImageIcon im;
+    private boolean inCity = false;
 
     public Ship (int l, int x, int y) {
         lives = l;
@@ -43,11 +44,11 @@ public class Ship implements Commons, KeyListener
             move(-5,0);
         if (key == KeyEvent.VK_RIGHT)
             move(5,0);
-        if (key == KeyEvent.VK_UP)
+        if (key == KeyEvent.VK_UP&&inCity)
             move(0,5);
-        if (key == KeyEvent.VK_DOWN)
+        if (key == KeyEvent.VK_DOWN&&inCity)
             move (-5,0);
-        if (key == KeyEvent.VK_SPACE)
+        if (key == KeyEvent.VK_SPACE&&!inCity)
             shoot();
     }	
     public void keyReleased (KeyEvent e) {}
