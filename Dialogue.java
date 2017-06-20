@@ -1,3 +1,8 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.Scanner;
+import java.util.Random;
 public class Dialogue // pop up text box, offers options like Jay's problem set menus
 {
     private static Random ran = new Random();
@@ -23,7 +28,7 @@ public class Dialogue // pop up text box, offers options like Jay's problem set 
         {
             textBox.displayLine("General Zorp-Gorp: Well, we planned to invade, but perhaps we can make a deal.");
             sc.nextLine();
-            textBox.displayLine("1. I'll have to ask my superiors. Could you wait a few hours?")
+            textBox.displayLine("1. I'll have to ask my superiors. Could you wait a few hours?");
             textBox.displayLine("2. Barter? You must be joking. We expect you to leave and to leave now.");
             textBox.displayLine("3. Great! Let's talk. What would you like?");
             do{
@@ -80,15 +85,36 @@ public class Dialogue // pop up text box, offers options like Jay's problem set 
             System.out.println("Those aliens can't get past you!");
         else if (msg == 4)
             System.out.println("Bless you mister.");
+        sc.nextLine();
+    }
+    
+    public int run(String character) { // returns difficulty after dialogue with alien, or just displays message from citizen
+        //Create and set up the window.
+        JFrame frame = new JFrame("TextBox");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ 
+        //Add contents to the window.
+        frame.add(new TextBox());
+ 
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+        
+        if(character.equals("Alien"))
+        {
+            return talkAlien();
+        }
+        else if(character.equals("Citizen"))
+        {
+            talkCitizen();
+            return 0; // just to fulfill the return int requirement, the 0 is not meant for anything
+        }
     }
 }
 
-package components;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+
  
-public class TextBox extends JPanel implements ActionListener {
+class TextBox extends JPanel{
 //     protected JTextField textField;
     protected JTextArea textArea;
 //     private final static String newline = "\n";
@@ -147,13 +173,13 @@ public class TextBox extends JPanel implements ActionListener {
         frame.setVisible(true);
     }
  
-    public static void main(String[] args) {
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
+//     public static void main(String[] args) {
+//         //Schedule a job for the event dispatch thread:
+//         //creating and showing this application's GUI.
+//         javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//             public void run() {
+//                 createAndShowGUI();
+//             }
+//         });
+//     }
 }
