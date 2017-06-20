@@ -94,21 +94,14 @@ public class City extends JFrame implements Runnable, MouseListener, ActionListe
 
     public void mouseClicked(MouseEvent e) {}
 
-    public void actionPerformed (ActionEvent e)
+     public void actionPerformed (ActionEvent e)
     {  
-        if (e.getActionCommand ().equals ("City")) 
+        if (e.getActionCommand ().equals ("Back to Mission")) 
         {
-            JPanel city = new JPanel ();
-            city.setLayout (new BorderLayout ());
-
-            setContentPane (city);
-            pack ();
-            setTitle ("Home Base");
-            setSize (600, 400);
-            setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-            setLocationRelativeTo (null); // Center window
+            SpaceInvaders mission = new SpaceInvaders ();
         }
     }
+
 
     public void startGame() {
         //These two lines may look confusing but basically they start the 
