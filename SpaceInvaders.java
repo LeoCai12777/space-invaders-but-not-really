@@ -6,79 +6,76 @@ import javax.swing.filechooser.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*; // file IO
 import javax.imageio.*; // allows image loading
-import java.awt.event.*;  // Needed for ActionListener
 
-class SpaceInvaders extends JFrame implements KeyListener, Commons
-{
-    static Map map = new Map (60, 40, 10, 10); // create map, block size
-    static Timer t;
+import java.awt.image.BufferedImage;
 
-    //======================================================== constructor
-    public SpaceInvaders ()
-    {
+public class SpaceInvaders extends JFrame implements Runnable, MouseListener, ActionListener 
+{ 
+    public static int WIDTH = 600;//The width of the frame
+    public static int HEIGHT = 400;//The height of the frame
 
-        // 1... Enable key listener for movement
-        addKeyListener (this);
-        setFocusable (true);
-        setFocusTraversalKeysEnabled (false);
+    private int gameSpeed = 100;//Try 500
 
-        // 2... Create content pane, set layout
-        JPanel content = new JPanel ();        // Create a content pane
+    Armada army = null;
 
-        //map.addWall (); // add a wall
+    Ship ship = null;
 
-        DrawArea board = new DrawArea (800, 800); // Area for map to be displayed
+    private boolean paused = false;
 
-        content.add (board); // map display area
+    private int score = 0;
 
-        // 4... Set this window's attributes.
+    Graphics offscreen_high;
+    BufferedImage offscreen;
+
+    Image backGroundImage = null;
+    Image alienImage = null; 
+
+    public SpaceInvaders() 
+    {        
+        // 1... Create/initialize components
+        JButton cityBtn = new JButton ("Go to Home Base");
+        cityBtn.addActionListener (this);
+
+        //2... Create content pane, set layout
+        JPanel content = new JPanel ();
+        content.setLayout (new BorderLayout ());
+        JPanel north = new JPanel ();
+        north.setLayout (new FlowLayout ());
+
+        DrawArea map = new DrawArea (600, 400);
+        content.add (map, "Center");
+        
         setContentPane (content);
         pack ();
-        setTitle ("Space Invaders");
-        setSize (800, 800);
+        setTitle ("Space Invaders: Mission");
+        setSize (600, 600);
         setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo (null);           // Center window.
+        setLocationRelativeTo (null); // Center window
 
-        board.addKeyListener (this);
+        // 3... Add the components to the input area.
+        north.add (cityBtn);
+        content.add (north, "North");
 
-        Movement randomStuff = new Movement (); // ActionListener for timer
-        t = new Timer (500, randomStuff); // set up Movement to run every 500 milliseconds
-        t.start (); // start the timer
+        content.addMouseListener(this);
 
-    }
+        //Create the ship to fight off the invading army!
+        ship = new Ship(this);
 
-    public void keyTyped (KeyEvent e)
-    {
-        // nothing
-    }
+        //Create the alien army
+        army = new Armada (ship, this, alienImage);
 
-    public void keyReleased (KeyEvent e)
-    {
-        // nothing
-    }
+        //The ship will be controlled by the mouse
+        content.addMouseListener(ship);
+        //We also want mouse movement not just mouse clicks
+        content.addMouseMotionListener(ship);
 
-    public void keyPressed (KeyEvent e) // handle cursor keys and enter
-    {
-        int key = e.getKeyCode ();
-        switch (key)
-        {
-            case KeyEvent.VK_UP:
-            map.move (0, -1);
-            break;
-            case KeyEvent.VK_DOWN:
-            map.move (0, 1);
-            break;
-            case KeyEvent.VK_LEFT:
-            map.move (-1, 0);
-            break;
-            case KeyEvent.VK_RIGHT:
-            map.move (1, 0);
-            break;
-            case KeyEvent.VK_ENTER:
-            map.explode ();
-            break;
-        }
-        repaint ();
+        //offscreen = new BufferedImage(WIDTH, HEIGHT,BufferedImage.TYPE_INT_RGB);
+        //offscreen_high = offscreen.createGraphics();
+
+        content.setBackground(Color.black);
+        //setSize(WIDTH, HEIGHT);
+        setVisible(true);
+        startGame();
     }
 
     class DrawArea extends JPanel
@@ -88,117 +85,113 @@ class SpaceInvaders extends JFrame implements KeyListener, Commons
             this.setPreferredSize (new Dimension (width, height)); // size
         }
 
-        public void paintComponent (Graphics g)
-        {
-            map.print (g);
+        public void paint (Graphics g) {
+            g.setColor(Color.black);
+            g.fillRect(0,0, WIDTH, HEIGHT);
+
+            army.drawArmy(g);
+
+            ship.drawShip(g);
+
+            g.drawImage(offscreen,0,0,this); 
         }
     }
 
-    class Movement implements ActionListener // executed according to timer delay
-    {
-        public void actionPerformed (ActionEvent event)
+    public void mousePressed(MouseEvent e) {}
+
+    public void mouseReleased(MouseEvent e) {}
+
+    public void mouseEntered(MouseEvent e) {}
+
+    public void mouseExited(MouseEvent e) {}
+
+    public void mouseClicked(MouseEvent e) {}
+
+    public void actionPerformed (ActionEvent e)
+    {  
+        if (e.getActionCommand ().equals ("Go to Home Base")) 
         {
-            //map.addTreasures (); // add a random treasure to map
-            repaint (); // refresh
+            City city = new City ();
+            
         }
     }
 
-    //======================================================== method main
-    public static void main (String[] args)
-    {
-        SpaceInvaders window = new SpaceInvaders ();
-        window.setVisible (true);
+    /**
+     * As you move your mouse on and off the screen we want to pause
+     * the game.
+     */
+    public void pauseGame(boolean state) {
+        paused = state;
+    }
+
+    /**
+     * Kill an alien and get 5 points!
+     */
+    public void hitAlienScore() { 
+        //Add 5 to the score
+        score += 5;
+        System.out.println("Current Score = "+score);
+    }
+
+    /**
+     * Get bullet and loose 20 points!
+     */
+    public void bulletShip() {
+        score -= 20;
+        System.out.println("Current Score = "+score);
+    }
+
+    public void startGame() {
+        //These two lines may look confusing but basically they start the 
+        //game process, i.e. update the display screen every 100ms.
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+
+
+    public void update(Graphics g) {
+        paint(g);
+    }
+
+    public void moveAliens() {
+        army.moveArmy();
+    }
+
+    public void run() {
+        int count = 0;
+        while(true) {
+            try {
+                Thread.sleep(gameSpeed);
+            } catch(InterruptedException ie) {
+                //Ignore this exception
+            }
+            //If the game is currently running, move the aliens
+            if (!paused) {
+                if (count >= 5) {
+                    moveAliens();
+                    count = 0;
+                }
+            }
+            repaint();//Update the screen
+            count ++;
+        }
+    }
+
+    /**
+     * Get a reference to the alien army
+     */
+    public Armada getArmada() {
+        return army;
+    }
+
+    /**
+     * This is the program entry point
+     */
+    public static void main(String []args) {
+        SpaceInvaders invaders = new SpaceInvaders();
+    }
+
+    public static void clear () { //clears screen
+        System.out.print('\u000C');
     }
 }
-
-//-------------------------------------- Map Class ------------------------------------------------
-
-class Map
-{
-    private char map[] [];
-    private int width, height, posx, posy;
-    private Image image;
-    
-    public Map (int rows, int cols, int blockwidth, int blockheight)
-    {
-        width = blockwidth;
-        height = blockheight;
-        map = new char [rows] [cols]; // define 2-d array size
-
-        for (int row = 0 ; row < rows ; row++) {
-            for (int col = 0 ; col < cols ; col++)
-            {
-                if (row == 0 || row == rows - 1 || col == 0 || col == cols - 1) // border
-                    map [row] [col] = 'W'; // put up a wall
-                else
-                    map [row] [col] = ' '; // blank space
-            }
-        }
-        //map [rows - 1] [cols / 2] = 'D'; // make a door
-        //map [rows - 1] [cols / 2 + 1] = 'D';
-
-        posx = cols / 2 - 2;
-        posy = rows - 2;
-    }
-
-    public void print (Graphics g)    // displays the map on the screen
-    {
-        image = null;
-        for (int row = 0 ; row < map.length ; row++) // number of rows
-        {
-            for (int col = 0 ; col < map [0].length ; col++) // length of first row
-            {
-                if (map [row] [col] == 'W') // wall
-                    g.setColor (Color.black);
-                else if (map [row] [col] == 'D') // door
-                    g.setColor (Color.red);
-                else if (map [row] [col] == 'T') // treasure
-                    g.setColor (Color.orange);
-                else if (map [row] [col] == ' ') // space will erase what was there
-                    g.setColor (Color.white);
-                g.fillRect (col * width + 10, row * height + 10, width, height); // draw block
-            }
-        }
-        
-        try { // draw character
-            // load file into Image object
-            image = ImageIO.read (new File ("Images/" + "ship.png")); 
-        } catch (IOException e) {
-            System.out.println ("File not found");
-        }
-        g.drawImage (image, posx * width + 10, posy * height + 10, null); // draw image        
-
-    }
-
-    public void addTreasures () // adds treasure to random location
-    {
-        int row = (int) (Math.random () * (map.length - 2) + 1);
-        int col = (int) (Math.random () * (map [0].length - 2) + 1);
-        map [row] [col] = 'T';
-    }
-
-    public void move (int dx, int dy) // moves character if possible (no obstruction)
-    {
-        if (map [posy + dy] [posx + dx] == ' ') // empty space
-        {
-            posx += dx;
-            posy += dy;
-        }
-    }
-
-    public void explode () // kills everything within one space of character
-    {
-        for (int x = -1 ; x <= 1 ; x++)
-        {
-            for (int y = -1 ; y <= 1 ; y++)
-            {
-                map [posy + y] [posx + x] = ' ';  // empty space
-            }
-        }
-        map [posy] [posx] = 'c'; // put character back
-    }
-}
-
-//first make stationary aliens
-//timer for bulletsbegbe
-//when aliens and bullets coordiantes intersect, explode
