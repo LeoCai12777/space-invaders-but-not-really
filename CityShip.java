@@ -18,8 +18,7 @@ public class CityShip implements MouseListener, MouseMotionListener {
     public static int SHIP_WIDTH = 15;
 
     private int x = 0, y = 0;
-    private int heightPosition = 0;
-
+    
     private Image shipImage = null;
 
     City city = null;
@@ -36,7 +35,7 @@ public class CityShip implements MouseListener, MouseMotionListener {
         city = c;
         //Dynamically work out the starting position of the ship
         x = (int)((SpaceInvaders.WIDTH/2)+(SHIP_WIDTH/2));
-        heightPosition = SpaceInvaders.HEIGHT-SHIP_HEIGHT-20;
+        y = (int)((SpaceInvaders.HEIGHT/2)+(SHIP_HEIGHT/2));
     }
 
     /**
@@ -57,7 +56,7 @@ public class CityShip implements MouseListener, MouseMotionListener {
             y = SpaceInvaders.HEIGHT-SHIP_HEIGHT-10;
         } else {
             //Set the new y position
-            y = newY;
+            y = newY-40;
         }
     }
 
@@ -111,6 +110,6 @@ public class CityShip implements MouseListener, MouseMotionListener {
         } catch (IOException e) {
             System.out.println ("File not found");
         }
-        g.drawImage (shipImage, x, heightPosition, null); // draw block
+        g.drawImage (shipImage, x, y, null); // draw block
     }
 }
